@@ -12,7 +12,7 @@ Este proyecto es una aplicación de autenticación y gestión de usuarios desarr
 ## Requisitos
 ### Dependencias Necesarias
 Antes de ejecutar el proyecto, asegúrese de tener instaladas las siguientes dependencias:
-- **Java 17 o superior**
+- **Java 21**
 - **Spring Boot 3.x**
 - **Maven**
 - **MySQL Server**
