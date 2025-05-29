@@ -117,5 +117,15 @@ Después de iniciar sesión, se recibirá un token JWT que debe enviarse en cada
 ```http
 Authorization: Bearer <TOKEN_JWT>
 ```
+## Ahora, este es un avance de un proyecto de spring boot, el cual consiste en la recomendación de libros y peliculas.
+![image](https://github.com/user-attachments/assets/56282354-002a-4e9d-8682-980cf152cb1c)
+![image](https://github.com/user-attachments/assets/8dd0162d-7062-4f2e-a59d-a747537bef1d)
+![image](https://github.com/user-attachments/assets/49690d90-d9cb-45ce-b1a3-7cc915db69f2)
+![image](https://github.com/user-attachments/assets/e3e5f816-1b78-4bd6-affa-7213f7b552bd)
+![image](https://github.com/user-attachments/assets/cb9a6ecd-c5f5-48b1-98d1-95cab136d4a3)
+
+
+
+
 
 
