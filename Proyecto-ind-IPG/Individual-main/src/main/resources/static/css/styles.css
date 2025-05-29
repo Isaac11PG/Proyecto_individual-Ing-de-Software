@@ -1,0 +1,144 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--bg-primary);
+    background-image: url('/static/images/background.jpg'); /* Puedes agregar tu fondo aquí */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+}
+
+/* Overlay para mejor contraste en ambos temas */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+[data-theme="dark"] body::before {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+h1 {
+    text-align: center;
+    color: var(--text-white);
+    margin-bottom: 20px;
+}
+
+/* Container for centering content */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+}
+
+/* Form Styles */
+.form-container {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: var(--shadow-dark);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 350px;
+    max-width: 100%;
+    color: var(--text-primary);
+    position: relative;
+    z-index: 2;
+    backdrop-filter: blur(10px);
+}
+
+/* Tema oscuro - hacer el fondo del formulario más transparente */
+[data-theme="dark"] .form-container {
+    background-color: rgba(30, 30, 30, 0.9);
+    border-color: var(--border-color);
+}
+
+/* Tema claro - fondo más sólido */
+[data-theme="light"] .form-container {
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+label {
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    padding: 10px;
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border: 2px solid var(--bg-green);
+    background-color: var(--bg-secondary);
+}
+
+button {
+    padding: 12px;
+    background-color: var(--bg-green);
+    color: var(--text-white);
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--bg-green-hover);
+}
+
+/* Link Styles */
+a {
+    color: var(--bg-green);
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .form-container {
+        width: 100%;
+        padding: 20px;
+    }
+}

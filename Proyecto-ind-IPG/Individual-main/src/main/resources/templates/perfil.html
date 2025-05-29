@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil</title>
+    
+    <!-- CSS de temas (debe ir primero) -->
+    <link rel="stylesheet" href="/css/themes.css">
+    <!-- CSS específico de perfil -->
+    <link rel="stylesheet" href="/css/perfil.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--text-primary, #333);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 100%;
+            padding: 1.5rem 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            animation: slideIn 0.8s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .profile-image-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .profile-image:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        .profile-image-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #ff6b6b;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid white;
+        }
+        
+        .profile-image-upload:hover {
+            background: #ff5252;
+            transform: scale(1.1);
+        }
+        
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-email {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .tabs {
+            display: flex;
+            background: rgba(0,0,0,0.05);
+            border-radius: 0;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 1.2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            background: transparent;
+        }
+        
+        .tab:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .tab.active {
+            background: white;
+            border-bottom-color: #667eea;
+            color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 2.5rem;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e1e5e9;
+        }
+        
+        .btn-secondary:hover {
+            background: #e9ecef;
+            border-color: #dee2e6;
+        }
+        
+        .mensaje {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .mensaje-exito {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+            border: 1px solid rgba(40, 167, 69, 0.2);
+        }
+        
+        .mensaje-error {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.2);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .file-upload-area {
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .file-upload-area:hover {
+            background: rgba(102, 126, 234, 0.05);
+            border-color: #5a67d8;
+        }
+        
+        .file-upload-area i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 0;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .profile-header {
+                padding: 2rem 1rem;
+            }
+            
+            .tab-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-user-circle"></i> Mi Perfil</h1>
+    </div>
+    
+    <div class="container">
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-image-container">
+                    <div class="profile-image">
+                        <!-- Si el usuario tiene imagen, mostrarla -->
+                        <img th:if="${tieneImagen}" th:src="@{'/usuario/imagen/' + ${usuario.id}}" id="profileImage" alt="Foto de perfil" />
+                        <!-- Si no tiene imagen, mostrar icono por defecto -->
+                        <i th:unless="${tieneImagen}" class="fas fa-user"></i>
+                        
+                        <!-- Botón para cambiar la imagen -->
+                        <label for="fileInput" class="profile-image-upload">
+                            <i class="fas fa-camera"></i>
+                        </label>
+                        <input type="file" id="fileInput" accept="image/*" class="hidden" />
+                    </div>
+                </div>
+                <h2 class="profile-name" th:text="${usuario.nombre}">Usuario</h2>
+                <p class="profile-email" th:text="${usuario.email}">usuario@ejemplo.com</p>
+            </div>
+            
+            <!-- Tabs para separar las secciones -->
+            <div class="tabs">
+                <div class="tab" data-tab="info">
+                    <i class="fas fa-info-circle"></i>
+                    Información Personal
+                </div>
+                <div class="tab" data-tab="password">
+                    <i class="fas fa-lock"></i>
+                    Cambiar Contraseña
+                </div>
+                <div class="tab" data-tab="image">
+                    <i class="fas fa-image"></i>
+                    Cambiar Imagen
+                </div>
+            </div>
+            
+            <!-- Tab de Información Personal -->
+            <div id="infoTab" class="tab-content">
+                <form action="/perfil/actualizar-info" method="post">
+                    <div class="form-group">
+                        <label for="nombre">
+                            <i class="fas fa-user"></i>
+                            Nombre
+                        </label>
+                        <input type="text" id="nombre" name="nombre" th:value="${usuario.nombre}" placeholder="Tu nombre" required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">
+                            <i class="fas fa-envelope"></i>
+                            Email
+                        </label>
+                        <input type="email" id="email" name="email" th:value="${usuario.email}" placeholder="Tu email" required />
+                    </div>
+                    
+                    <div class="buttons">
+                        <a href="/home" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i>
+                            Volver
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Actualizar Información
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Tab de Cambiar Contraseña -->
+            <div id="passwordTab" class="tab-content">
+                <form action="/perfil/actualizar-password" method="post">
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fas fa-key"></i>
+                            Nueva Contraseña
+                        </label>
+                        <input type="password" id="password" name="password" placeholder="Ingresa tu nueva contraseña" required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">
+                            <i class="fas fa-check-double"></i>
+                            Confirmar Contraseña
+                        </label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirma tu nueva contraseña" required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="currentPassword">
+                            <i class="fas fa-shield-alt"></i>
+                            Contraseña Actual
+                        </label>
+                        <input type="password" id="currentPassword" name="currentPassword" placeholder="Ingresa tu contraseña actual" required />
+                    </div>
+                    
+                    <div class="buttons">
+                        <a href="/home" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i>
+                            Volver
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Tab de Cambiar Imagen -->
+            <div id="imageTab" class="tab-content">
+                <form action="/perfil/actualizar-imagen" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-upload"></i>
+                            Selecciona una nueva imagen de perfil
+                        </label>
+                        <div class="file-upload-area" onclick="document.getElementById('imagenPerfil').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Haz clic aquí para seleccionar una imagen</p>
+                            <small>JPG, PNG o GIF (máx. 5MB)</small>
+                        </div>
+                        <input type="file" id="imagenPerfil" name="imagen" accept="image/*" class="hidden" required />
+                    </div>
+                    
+                    <div class="buttons">
+                        <a href="/home" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i>
+                            Volver
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-upload"></i>
+                            Subir Imagen
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Mensaje de resultado -->
+            <div th:if="${mensaje}" class="mensaje" th:classappend="${tipoMensaje == 'error'} ? 'mensaje-error' : 'mensaje-exito'" th:text="${mensaje}">
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript para el cambio de tema -->
+    <script src="/js/theme-switcher.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar la primera tab como activa por defecto
+            document.querySelector('.tab[data-tab="info"]').classList.add('active');
+            document.getElementById('infoTab').classList.add('active');
+            
+            // Cambio de tabs
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Quitar clases active
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Añadir clase active al tab clickeado y su contenido
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId + 'Tab').classList.add('active');
+                });
+            });
+            
+            // Cargar la imagen de perfil
+            const profileImage = document.getElementById('profileImage');
+            if (profileImage) {
+                const userId = profileImage.src.split('/').pop();
+                fetch(`/usuario/imagen/${userId}`)
+                    .then(response => response.text())
+                    .then(base64Image => {
+                        if (base64Image && base64Image.length > 0) {
+                            profileImage.src = `data:image/jpeg;base64,${base64Image}`;
+                        }
+                    })
+                    .catch(error => console.error('Error cargando la imagen:', error));
+            }
+            
+            // Mostrar imagen seleccionada en miniatura
+            const fileInput = document.getElementById('fileInput');
+            fileInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        // Redirigir a la tab de imagen
+                        document.querySelector('.tab[data-tab="image"]').click();
+                        // Establecer la imagen seleccionada en el input del formulario
+                        document.getElementById('imagenPerfil').files = fileInput.files;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Mejorar la experiencia del file upload
+            const imagenPerfilInput = document.getElementById('imagenPerfil');
+            const fileUploadArea = document.querySelector('.file-upload-area');
+            
+            imagenPerfilInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        fileUploadArea.innerHTML = `
+                            <i class="fas fa-check-circle" style="color: #28a745;"></i>
+                            <p style="color: #28a745; font-weight: 600;">Imagen seleccionada: ${file.name}</p>
+                            <small>Haz clic en "Subir Imagen" para guardar los cambios</small>
+                        `;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

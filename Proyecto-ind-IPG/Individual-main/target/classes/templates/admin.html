@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+    
+    <!-- CSS de temas (debe ir primero) -->
+    <link rel="stylesheet" href="/css/themes.css">
+    <!-- CSS específico de administración -->
+    <link rel="stylesheet" href="/css/administrador.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Sistema de Recomendaciones</h1>
+        <p>Panel de Administración</p>
+    </div>
+    
+    <div class="container">
+        <div class="admin-header">
+            <h2>Bienvenido, Administrador</h2>
+            <div>
+                <span sec:authentication="name" style="margin-right: 1rem;">Usuario</span>
+            </div>
+        </div>
+        
+        <!-- Opciones de administración -->
+        <div class="admin-options" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
+            
+            <div class="admin-card" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--shadow-medium); text-align: center;">
+                <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Gestión de Usuarios</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Administra los usuarios del sistema, edita perfiles y asigna roles.</p>
+                <a href="/admin/usuarios" class="btn btn-primary">Administrar Usuarios</a>
+            </div>
+            
+            <div class="admin-card" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--shadow-medium); text-align: center;">
+                <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Estadísticas del Sistema</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Ver métricas y estadísticas de uso del sistema de recomendaciones.</p>
+                <a href="/admin/estadisticas" class="btn btn-secondary">Ver Estadísticas</a>
+            </div>
+            
+            <div class="admin-card" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--shadow-medium); text-align: center;">
+                <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Configuración</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Ajustes generales del sistema y configuraciones avanzadas.</p>
+                <a href="/admin/configuracion" class="btn btn-secondary">Configurar Sistema</a>
+            </div>
+            
+            <div class="admin-card" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--shadow-medium); text-align: center;">
+                <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Recomendaciones</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Gestiona el algoritmo de recomendaciones y contenido destacado.</p>
+                <a href="/admin/recomendaciones" class="btn btn-secondary">Gestionar Recomendaciones</a>
+            </div>
+            
+            <div class="admin-card" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--shadow-medium); text-align: center;">
+                <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Logs del Sistema</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Revisa los registros de actividad y errores del sistema.</p>
+                <a href="/admin/logs" class="btn btn-secondary">Ver Logs</a>
+            </div>
+            
+            <div class="admin-card" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 1.5rem; box-shadow: var(--shadow-medium); text-align: center;">
+                <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Respaldo y Mantenimiento</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Herramientas de mantenimiento y respaldo de datos.</p>
+                <a href="/admin/mantenimiento" class="btn btn-secondary">Mantenimiento</a>
+            </div>
+            
+        </div>
+        
+        <!-- Información rápida del sistema -->
+        <div class="quick-stats" style="background-color: var(--table-header-bg); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 1.5rem; margin-top: 2rem;">
+            <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Estado del Sistema</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div style="text-align: center;">
+                    <h4 style="color: var(--bg-button); margin-bottom: 0.5rem;">Usuarios Totales</h4>
+                    <p style="font-size: 1.5rem; font-weight: bold; color: var(--text-primary);" th:text="${totalUsuarios ?: '0'}">0</p>
+                </div>
+                <div style="text-align: center;">
+                    <h4 style="color: var(--bg-button); margin-bottom: 0.5rem;">Búsquedas Hoy</h4>
+                    <p style="font-size: 1.5rem; font-weight: bold; color: var(--text-primary);" th:text="${busquedasHoy ?: '0'}">0</p>
+                </div>
+                <div style="text-align: center;">
+                    <h4 style="color: var(--bg-button); margin-bottom: 0.5rem;">Recomendaciones</h4>
+                    <p style="font-size: 1.5rem; font-weight: bold; color: var(--text-primary);" th:text="${totalRecomendaciones ?: '0'}">0</p>
+                </div>
+                <div style="text-align: center;">
+                    <h4 style="color: var(--bg-button); margin-bottom: 0.5rem;">Sistema</h4>
+                    <p style="font-size: 1.5rem; font-weight: bold; color: #4caf50;">Activo</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navigation-buttons">
+            <a href="/home" class="btn btn-back">Volver al Inicio</a>
+            <a href="/logout" class="btn btn-danger">Cerrar Sesión</a>
+        </div>
+    </div>
+    
+    <!-- JavaScript para el cambio de tema -->
+    <script src="/js/theme-switcher.js"></script>
+</body>
+</html>
